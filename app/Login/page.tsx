@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 
 import { BiSolidUser } from "react-icons/bi";
@@ -10,6 +10,7 @@ import { MdEmail } from "react-icons/md";
 import "../css/login.css";
 
 export default function page() {
+  const errorRef = useRef<HTMLDivElement>(null);
   const [switchState, setSwitchState] = useState("login");
   const [loginReq, setLoginReq] = useState<LoginRequest>({
     email: "",
@@ -19,10 +20,75 @@ export default function page() {
     email: "",
     username: "",
     password: "",
+    repeatPassword: "",
   });
+
+  const showErrorMessage = (message: string) => {
+    const errorDiv = errorRef.current;
+
+    if (errorDiv) {
+      errorDiv.innerHTML = message;
+      errorDiv.style.top = "0";
+    }
+
+    setTimeout(() => {
+      if (errorDiv) {
+        errorDiv.style.top = "-6vh";
+      }
+    }, 2500);
+  };
+
+  const loginHandler = async () => {
+    if (loginReq.email === "") {
+      showErrorMessage("Email is required");
+    }
+    if (loginReq.password === "") {
+      showErrorMessage("Password is required");
+    }
+  };
+
+  const registerHandler = async () => {
+    if (registerReq.email === "") {
+      showErrorMessage("Email is required");
+    }
+    if (registerReq.username === "") {
+      showErrorMessage("Username is required");
+    }
+    if (registerReq.password === "") {
+      showErrorMessage("Password is required");
+    }
+    if (registerReq.repeatPassword === "") {
+      showErrorMessage("Repeat password is required");
+    }
+    if (registerReq.password !== registerReq.repeatPassword) {
+      showErrorMessage("Passwords don't match");
+    }
+
+    const registerRequest = {
+      email: registerReq.email,
+      username: registerReq.username,
+      password: registerReq.password,
+    };
+
+    try {
+      const response = await fetch("/api/user", {
+        method: "POST",
+        body: JSON.stringify(registerRequest),
+      });
+      if (response.status === 200) {
+        showErrorMessage("User created successfully");
+      } else {
+        showErrorMessage("Something went wrong");
+      }
+    } catch (err) {
+      console.error(err);
+      showErrorMessage("Something went wrong");
+    }
+  };
 
   return (
     <div id="login_main_container">
+      <div className="error_message" ref={errorRef}></div>
       <div className="login_container">
         {/* Logo */}
         <Image
@@ -68,6 +134,9 @@ export default function page() {
               type="email"
               id="login_email"
               placeholder="Enter your Email"
+              onChange={(e) => {
+                setLoginReq({ ...loginReq, email: e.target.value });
+              }}
             />
           </div>
           <div className="form_control">
@@ -78,9 +147,14 @@ export default function page() {
               type="password"
               id="login_password"
               placeholder="Enter your password"
+              onChange={(e) => {
+                setLoginReq({ ...loginReq, password: e.target.value });
+              }}
             />
           </div>
-          <button id="login_btn">Login</button>
+          <button id="login_btn" onClick={loginHandler}>
+            Login
+          </button>
         </div>
         {/* Register Form */}
         <div
@@ -95,6 +169,9 @@ export default function page() {
               type="email"
               id="register_email"
               placeholder="Enter your email"
+              onChange={(e) => {
+                setRegisterReq({ ...registerReq, email: e.target.value });
+              }}
             />
           </div>
           <div className="form_control">
@@ -105,6 +182,9 @@ export default function page() {
               type="text"
               id="register_username"
               placeholder="Enter your username"
+              onChange={(e) => {
+                setRegisterReq({ ...registerReq, username: e.target.value });
+              }}
             />
           </div>
           <div className="form_control">
@@ -115,6 +195,9 @@ export default function page() {
               type="password"
               id="register_password"
               placeholder="Enter your password"
+              onChange={(e) => {
+                setRegisterReq({ ...registerReq, password: e.target.value });
+              }}
             />
           </div>
           <div className="form_control">
@@ -125,9 +208,17 @@ export default function page() {
               type="password"
               id="register_password_confirm"
               placeholder="Repeat your password"
+              onChange={(e) => {
+                setRegisterReq({
+                  ...registerReq,
+                  repeatPassword: e.target.value,
+                });
+              }}
             />
           </div>
-          <button id="register_btn">Register</button>
+          <button id="register_btn" onClick={registerHandler}>
+            Register
+          </button>
         </div>
       </div>
     </div>
