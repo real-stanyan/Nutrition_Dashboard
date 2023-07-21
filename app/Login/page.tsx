@@ -11,6 +11,7 @@ import "../css/login.css";
 
 export default function page() {
   const errorRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
   const [switchState, setSwitchState] = useState("login");
   const [loginReq, setLoginReq] = useState<LoginRequest>({
     email: "",
@@ -38,12 +39,48 @@ export default function page() {
     }, 2500);
   };
 
+  const showSuccessMessage = (message: string) => {
+    const successDiv = successRef.current;
+
+    if (successDiv) {
+      successDiv.innerHTML = message;
+      successDiv.style.top = "0";
+    }
+
+    setTimeout(() => {
+      if (successDiv) {
+        successDiv.style.top = "-6vh";
+      }
+    }, 2500);
+  };
+
   const loginHandler = async () => {
     if (loginReq.email === "") {
       showErrorMessage("Email is required");
     }
     if (loginReq.password === "") {
       showErrorMessage("Password is required");
+    }
+    const loginRequest = {
+      email: loginReq.email,
+      password: loginReq.password,
+    };
+    try {
+      const response = await fetch("/api/user", {
+        method: "GET",
+        body: JSON.stringify(loginRequest),
+      });
+      if (response.status === 200) {
+        showSuccessMessage("Logged in successfully");
+        window.location.href = "/";
+      } else if (response.status === 400) {
+        showErrorMessage("User bot found");
+      } else if (response.status === 401) {
+        showErrorMessage("Wrong password");
+      }
+    } catch (err) {
+      console.error(err);
+      showErrorMessage("Something went wrong");
     }
   };
 
@@ -76,7 +113,9 @@ export default function page() {
         body: JSON.stringify(registerRequest),
       });
       if (response.status === 200) {
-        showErrorMessage("User created successfully");
+        showSuccessMessage("User created successfully");
+      } else if (response.status === 400) {
+        showErrorMessage("User already exists");
       } else {
         showErrorMessage("Something went wrong");
       }
@@ -89,6 +128,7 @@ export default function page() {
   return (
     <div id="login_main_container">
       <div className="error_message" ref={errorRef}></div>
+      <div className="success_message" ref={successRef}></div>
       <div className="login_container">
         {/* Logo */}
         <Image

@@ -17,6 +17,18 @@
   color: #fff;
   transition: all 1s ease-in-out;
 }
+#login_main_container .success_message {
+  position: fixed;
+  top: -6vh;
+  left: 0;
+  width: 100vw;
+  height: 6vh;
+  line-height: 6vh;
+  text-align: center;
+  background-color: green;
+  color: #fff;
+  transition: all 1s ease-in-out;
+}
 #login_main_container .login_container {
   width: 40vw;
   height: 50vh;

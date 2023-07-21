@@ -11,13 +11,10 @@ export const connectToDatabase = async () => {
   }
 
   try {
-    await mongoose.connect(
-      "mongodb+srv://stan:Yanwenyao!123@test.3t6vwhs.mongodb.net/NutritionDashboard?retryWrites=true&w=majority",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    );
+    await mongoose.connect(process.env.DATABASE_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
     isConnected = true;
     console.log("MongoDB connected successfully");
