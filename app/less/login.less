@@ -1,0 +1,132 @@
+#login_main_container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .login_container {
+    width: 40vw;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .login_logo {
+      width: 12vw;
+      height: 12vw;
+    }
+    .login_register_switch {
+      width: 20vw;
+      height: 5vh;
+      line-height: 6vh;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      padding: 1vw;
+      border: 2px solid #000;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      .login_switch {
+        flex: 1;
+        height: 6vh;
+        margin-left: -1.2vw;
+        border: 1px solid #000;
+        &:hover {
+          background-color: #000;
+          color: #fff;
+        }
+      }
+      .register_switch {
+        flex: 1;
+        height: 6vh;
+        margin-right: -1.2vw;
+        border: 1px solid #000;
+        &:hover {
+          background-color: #000;
+          color: #fff;
+        }
+      }
+      .active {
+        background-color: #000;
+        color: #fff;
+      }
+    }
+    .login_form {
+      width: 80%;
+      padding: 10%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .form_control {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        margin-bottom: 3vh;
+        label {
+          width: 6%;
+          font-size: 1.5vw;
+          text-align: center;
+        }
+        input {
+          width: 70%;
+          padding: 0.5vw;
+          border: 2px solid #000;
+          border-radius: 10px;
+        }
+      }
+      #login_btn {
+        width: 40%;
+        height: 2vw;
+        border: 2px solid #000;
+        border-radius: 10px;
+        background-color: #fff;
+        font-weight: 900;
+        font-size: 0.8vw;
+        cursor: pointer;
+        &:hover {
+          background-color: #000;
+          color: #fff;
+        }
+      }
+    }
+    .register_form {
+      width: 80%;
+      padding: 10%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .form_control {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        margin-bottom: 3vh;
+        label {
+          width: 6%;
+          font-size: 1.5vw;
+          text-align: center;
+        }
+        input {
+          width: 70%;
+          padding: 0.5vw;
+          border: 2px solid #000;
+          border-radius: 10px;
+        }
+      }
+      #register_btn {
+        width: 40%;
+        height: 2vw;
+        border: 2px solid #000;
+        border-radius: 10px;
+        background-color: #fff;
+        font-weight: 900;
+        font-size: 0.8vw;
+        cursor: pointer;
+        &:hover {
+          background-color: #000;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
